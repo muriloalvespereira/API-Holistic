@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const config = require('./config/config');
+const cors = require('cors');
 
 const url = config.bd_string;
 const options = { reconnectTries: Number.MAX_VALUE, reconnectInterval: 500, poolSize: 5, useNewUrlParser: true };
@@ -25,6 +26,8 @@ mongoose.connection.on('connected', () => {
 //BODY PARSER
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(cors({origin:true,credentials: true}));
 
 const indexRoute = require('./Routes/index');
 const usersRoute = require('./Routes/users');

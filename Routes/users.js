@@ -4,7 +4,7 @@ const Users = require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const authCaptcha = require('../middlewares/authCaptcha');
+// const authCaptcha = require('../middlewares/authCaptcha');
 
 //FUNÇÕES AUXILIARES
 const createUserToken = (userId) => {
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/create', authCaptcha, async (req, res) => {
+router.post('/create', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
 

@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://holistic.vercel.app');
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
 
@@ -36,6 +37,7 @@ router.post('/create', async (req, res) => {
         return res.status(500).send({ error: 'Erro ao buscar usuário!' });
     }
 });
+
 
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body;

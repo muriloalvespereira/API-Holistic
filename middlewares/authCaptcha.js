@@ -1,12 +1,13 @@
 const authCaptcha = async (req, res, next) => {
   const formData = JSON.parse(req.body);
-  const human = await validateHuman(formData.token);
+  const token = formData.token
+  const human = await validateHuman(token);
   if (!human) {
       res.status(400);
       res.json({errors: "Not an human"})
   }
 
-  async function validateHuman(token: string): Promise<Boolean> {
+  async function validateHuman(token) {
     const secret = process.env.SECRET_KEY;
     const response = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,

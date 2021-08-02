@@ -1,6 +1,7 @@
 const authCaptcha = async (req, res, next) => {
   const formData = JSON.parse(req.body);
   const token = formData.token
+  console.log(token)
   const human = await validateHuman(token);
   if (!human) {
       res.status(400);

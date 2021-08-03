@@ -30,9 +30,9 @@ app.use(bodyParser.json());
 app.use(cors({origin:true,credentials: true}));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', 'https://holistic.vercel.app');
+    res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
+    res.header('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Requested-With, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
     if (req.method === "OPTIONS") {
         return res.status(200).end();
     } else {

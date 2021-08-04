@@ -25,7 +25,7 @@ router.post('/create', async (req, res) => {
     if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
 
     try {
-        if (await Users.findOne({ email })) return res.status(400).statusText('Usuário já registrado!').send({ error: 'Usuário já registrado!'});
+        if (await Users.findOne({ email })) return res.status(400).send({ error: 'Usuário já registrado!'});
         
         const user = await Users.create(req.body);
         user.password = undefined;

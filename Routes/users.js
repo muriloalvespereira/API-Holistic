@@ -37,6 +37,17 @@ router.post('/create', async (req, res) => {
     }
 });
 
+router.post('/check', async (req, res) => {
+    const { email } = req.body;
+    try {
+        if (await Users.findOne({ email })) return res.status(400).send({ error: 'Usuário já registrado!'});
+        return res.status(200).send({ email: 'Email not found'});
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Erro ao buscar usuário!' });
+    }
+});
+
 
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body;

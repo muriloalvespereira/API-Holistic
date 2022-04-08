@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const url = config.bd_string;
 const options = { reconnectTries: Number.MAX_VALUE, reconnectInterval: 500, poolSize: 5, useNewUrlParser: true };
+const port = process.env.PORT || 3000
 
 mongoose.connect(url, options);
 mongoose.set('useCreateIndex', true);
@@ -47,6 +48,6 @@ const usersRoute = require('./Routes/users');
 app.use('/', indexRoute);
 app.use('/users', usersRoute);
 
-app.listen(3005);
+app.listen(port);
 
 module.exports = app;

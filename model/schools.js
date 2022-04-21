@@ -12,4 +12,4 @@ const UserSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("Schools", UserSchema, "allschools");
+module.exports = mongoose.model("School", UserSchema, "allschools");

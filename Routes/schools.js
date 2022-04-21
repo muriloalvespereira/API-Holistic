@@ -9,8 +9,16 @@ const config = require("../config/config");
 
 router.get("/", async (req, res) => {
   try {
-    const schools = await Schools.find({});
-    return res.send(schools);
+    const { q } = req.query;
+    const schools = await Schools.find({ $regex: q });
+    // const keys = ["title", "city", "country"];
+    // const search = (data) => {
+    //   return data.filter((item) =>
+    //     keys.some((key) => item[key].toLowerCase().includes(q))
+    //   );
+    // };
+
+    return res.send(schools.splice(0, 4));
   } catch (err) {
     return res.status(500).send({ error: "Erro na consulta de escolas!" });
   }

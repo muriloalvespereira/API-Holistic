@@ -1,19 +1,15 @@
 import express from 'express'
-import Users from '../../db/model/User.js'
-import bcrypt from 'bcrypt'
 import middlewares from './middlewares.js'
 
 const { create, getAllUsers, checkEmail, login } = middlewares
 
 const router = express.Router()
 
-router.get('/', getAllUsers)
+router.route('/').get(getAllUsers).post(create)
 
-router.post('/create', create)
+router.route('/check').post(checkEmail)
 
-router.post('/check', checkEmail)
-
-router.post('/auth', login)
+router.route('/login').post(login)
 
 export default router
 

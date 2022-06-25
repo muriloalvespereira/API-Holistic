@@ -1,29 +1,26 @@
-const express = require("express");
-const router = express.Router();
-const Schools = require("../model/schools");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const config = require("../config/config");
+import express from 'express'
+const router = express.Router()
+import Schools from '../model/schools.js'
 
 //FUNÇÕES AUXILIARES
 
-router.get("/", async (req, res) => {
-  try {
-    const { q } = req.query;
-    const schools = await Schools.find({ $regex: q });
-    // const keys = ["title", "city", "country"];
-    // const search = (data) => {
-    //   return data.filter((item) =>
-    //     keys.some((key) => item[key].toLowerCase().includes(q))
-    //   );
-    // };
+router.get('/', async (req, res) => {
+    try {
+        const { q } = req.query
+        const schools = await Schools.find({ $regex: q })
+        // const keys = ["title", "city", "country"];
+        // const search = (data) => {
+        //   return data.filter((item) =>
+        //     keys.some((key) => item[key].toLowerCase().includes(q))
+        //   );
+        // };
 
-    return res.send(schools.splice(0, 4));
-  } catch (err) {
-    return res.status(500).send({ error: "Erro na consulta de escolas!" });
-  }
-});
-module.exports = router;
+        return res.send(schools.splice(0, 4))
+    } catch (err) {
+        return res.status(500).send({ error: 'Erro na consulta de escolas!' })
+    }
+})
+export default router
 
 /*
 

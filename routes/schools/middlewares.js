@@ -3,8 +3,7 @@ import Schools from '../../db/model/schools.js'
 const getSchools = async (req, res) => {
     try {
         const { q } = req.query
-        const newRegex = new RegExp(q, 'gmi')
-        console.log(q, '342423ijhrvik23jlrjf23p;krpo32kr')
+
         const schools = await Schools.find({
             $text: { $search: q, $caseSensitive: false }
         })

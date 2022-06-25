@@ -4,7 +4,9 @@ import cors from 'cors'
 import indexRoute from './routes/index.js'
 import usersRoute from './routes/users/index.js'
 import schoolsRoute from './routes/schools/index.js'
+import errorHandlers from './utils/errors_handlers.js'
 import './db/coon.js'
+
 const app = express()
 
 const port = process.env.PORT || 3005
@@ -29,6 +31,10 @@ app.use(cors())
 app.use('/', indexRoute)
 app.use('/users', usersRoute)
 app.use('/schools', schoolsRoute)
+
+const { statusErrorMiddleware, serverError } = errorHandlers
+server.use(statusErrorMiddleware)
+server.use(serverError)
 
 app.listen(port, () => {
     console.log(`API rodando na porta ===> ${port}`)

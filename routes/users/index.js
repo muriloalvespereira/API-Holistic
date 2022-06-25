@@ -1,22 +1,13 @@
 import express from 'express'
-import jwt from 'jsonwebtoken'
-import config from '../../config/config.js'
 import Users from '../../db/model/User.js'
 import bcrypt from 'bcrypt'
 import middlewares from './middlewares.js'
 
-const { create } = middlewares
+const { create, getAllUsers } = middlewares
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-    try {
-        const users = await Users.find({})
-        return res.send(users)
-    } catch (err) {
-        return res.status(500).send({ error: 'Erro na consulta de usuários!' })
-    }
-})
+router.get('/', getAllUsers)
 
 router.post('/create', create)
 

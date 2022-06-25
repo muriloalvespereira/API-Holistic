@@ -24,6 +24,15 @@ const create = async (req, res) => {
     }
 }
 
-const middlewares = { create }
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await Users.find({})
+        return res.send(users)
+    } catch (err) {
+        return res.status(500).send({ error: 'Erro na consulta de usuários!' })
+    }
+}
+
+const middlewares = { create, getAllUsers }
 
 export default middlewares

@@ -1,39 +1,15 @@
 import express from 'express'
-import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
-import config from './config/config.js'
 import cors from 'cors'
 import indexRoute from './routes/index.js'
 import usersRoute from './routes/users.js'
 import schoolsRoute from './routes/schools.js'
-
+import './db/coon.js'
 const app = express()
 
-const url = config.bd_string
-const options = {
-    poolSize: 5,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}
 const port = process.env.PORT || 3005
 
-mongoose.connect(url, options)
-mongoose.set('useCreateIndex', true)
-
-mongoose.connection.on('error', (err) => {
-    console.log('Erro na conexão com o banco de dados: ' + err)
-})
-
-mongoose.connection.on('disconnected', () => {
-    console.log('Aplicação desconectada do banco de dados!')
-})
-
-mongoose.connection.on('connected', () => {
-    console.log('Aplicação conectada ao banco de dados!')
-})
-
 //BODY PARSER
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(cors())
@@ -54,6 +30,8 @@ app.use('/', indexRoute)
 app.use('/users', usersRoute)
 app.use('/schools', schoolsRoute)
 
-app.listen(port)
+app.listen(port, () => {
+    console.log(`API rodando na porta ===> ${port}`)
+})
 
 export default app

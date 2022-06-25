@@ -1,30 +1,11 @@
-const env = 'dev'
+const { JWT_SECRET_KEY, JWT_EXPERING_DATE, MONGO_URL, NODE_ENV } = process.env
 
-const config = () => {
-    switch (env) {
-        case 'dev':
-            return {
-                bd_string: `mongodb+srv://holisticad:${process.env.passMongo}@holistic-ireland.mnjpf.mongodb.net/schools?retryWrites=true&w=majority`,
-                jwt_pass: 'batatafrita2019',
-                jwt_expires_in: '7d'
-            }
-
-        case 'hml':
-            return {
-                bd_string: `mongodb+srv://holisticad:${process.env.passMongo}@holistic-ireland.mnjpf.mongodb.net/schools?retryWrites=true&w=majority`,
-                jwt_pass: 'batatafrita2019',
-                jwt_expires_in: '7d'
-            }
-
-        case 'prod':
-            return {
-                bd_string: `mongodb+srv://holisticad:${process.env.passMongo}@holistic-ireland.mnjpf.mongodb.net/schools?retryWrites=true&w=majority`,
-                jwt_pass: 'jfasdofjiof342342kjki4$@#$@#dsakdfsaf',
-                jwt_expires_in: '7d'
-            }
-    }
+const config = {
+    bd_string: MONGO_URL,
+    jwt_pass: JWT_SECRET_KEY,
+    jwt_expires_in: JWT_EXPERING_DATE
 }
 
-console.log(`Iniciando a API em ambiente ${env.toUpperCase()}`)
+console.log(`Iniciando a API em ambiente ===> ${NODE_ENV}`)
 
-export default config()
+export default config

@@ -1,6 +1,6 @@
 import express from 'express'
+import Schools from '../db/model/schools.js'
 const router = express.Router()
-import Schools from '../model/schools.js'
 
 //FUNÇÕES AUXILIARES
 

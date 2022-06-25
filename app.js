@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import indexRoute from './routes/index.js'
 import usersRoute from './routes/users/index.js'
-import schoolsRoute from './routes/schools.js'
+import schoolsRoute from './routes/schools/index.js'
 import './db/coon.js'
 const app = express()
 

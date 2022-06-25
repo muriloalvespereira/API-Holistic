@@ -1,7 +1,9 @@
 import express from 'express'
-import middlewares from './middlewares.js'
+import handlers from './handlers.js'
+import validation from './validation.js'
 
-const { create, getAllUsers, checkEmail, login } = middlewares
+const { userLoginValidation } = validation
+const { create, getAllUsers, checkEmail, login } = handlers
 
 const router = express.Router()
 
@@ -9,7 +11,7 @@ router.route('/').get(getAllUsers).post(create)
 
 router.route('/check').post(checkEmail)
 
-router.route('/login').post(login)
+router.route('/login').post(userLoginValidation, login)
 
 export default router
 

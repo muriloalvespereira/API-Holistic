@@ -2,6 +2,7 @@ import Users from '../../db/model/User.js'
 import utils from '../../authentication/utils.js'
 
 const { createUserToken, checkUserPassword } = utils
+
 const create = async (req, res) => {
     const { email, password } = req.body
     if (!email || !password)
@@ -37,35 +38,45 @@ const checkEmail = async (req, res) => {
             return res.status(400).send({ error: 'Usuário já registrado!' })
         return res.status(200).send({ email: 'Email not found' })
     } catch (err) {
-        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
+        return res
+            .status(500)
+            .send({ success: false, error: 'Erro ao buscar usuário!' })
     }
 }
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const { email, password } = req.body
-
-    if (!email || !password)
-        return res.status(400).send({ error: 'Dados insuficientes!' })
 
     try {
         const user = await Users.findOne({ email }).select('+password')
-        if (!user)
-            return res.status(400).send({ error: 'Usuário não registrado!' })
+        if (!user) {
+            return res
+                .status(404)
+                .send({ success: false, msg: 'Usuário não registrado!' })
+        }
 
         const pass_ok = await checkUserPassword(password, user.password)
 
         if (!pass_ok)
             return res
                 .status(401)
-                .send({ error: 'Erro ao autenticar usuário!' })
+                .send({ success: false, msg: 'Erro ao autenticar usuário!' })
 
         user.password = undefined
-        return res.send({ user, token: createUserToken(user.id) })
+
+        res.cookie(`Authentication`, createUserToken(user.id), {
+            maxAge: 60 * 60 * 60 * 24 * 7,
+            secure: true,
+            httpOnly: true,
+            sameSite: false
+        })
+
+        return res.send({ success: true, msg: 'Cookie set' })
     } catch (err) {
-        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
+        next(err)
     }
 }
 
-const middlewares = { create, getAllUsers, checkEmail, login }
+const handlers = { create, getAllUsers, checkEmail, login }
 
-export default middlewares
+export default handlers

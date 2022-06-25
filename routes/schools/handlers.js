@@ -1,6 +1,6 @@
 import Schools from '../../db/model/schools.js'
 
-const getSchools = async (req, res) => {
+const getSchools = async (req, res, next) => {
     try {
         const { q } = req.query
 
@@ -16,11 +16,10 @@ const getSchools = async (req, res) => {
 
         return res.send(schools.splice(0, 4))
     } catch (err) {
-        console.log(err)
-        return res.status(500).send({ error: 'Erro na consulta de escolas!' })
+        next(err)
     }
 }
 
-const middlewares = { getSchools }
+const handlers = { getSchools }
 
-export default middlewares
+export default handlers

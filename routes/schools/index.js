@@ -1,7 +1,7 @@
 import express from 'express'
-import middlewares from './middlewares.js'
+import handlers from './handlers.js'
 
-const { getSchools } = middlewares
+const { getSchools } = handlers
 
 const router = express.Router()
 

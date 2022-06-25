@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import config from '../config/config.js'
 
 const createUserToken = (userId) => {
@@ -7,8 +8,13 @@ const createUserToken = (userId) => {
     })
 }
 
+const checkUserPassword = async (password, userPassword) => {
+    return await bcrypt.compare(password, userPassword)
+}
+
 const utils = {
-    createUserToken
+    createUserToken,
+    checkUserPassword
 }
 
 export default utils

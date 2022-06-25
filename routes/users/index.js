@@ -3,7 +3,7 @@ import Users from '../../db/model/User.js'
 import bcrypt from 'bcrypt'
 import middlewares from './middlewares.js'
 
-const { create, getAllUsers, checkEmail } = middlewares
+const { create, getAllUsers, checkEmail, login } = middlewares
 
 const router = express.Router()
 
@@ -13,30 +13,7 @@ router.post('/create', create)
 
 router.post('/check', checkEmail)
 
-router.post('/auth', async (req, res) => {
-    const { email, password } = req.body
-
-    if (!email || !password)
-        return res.status(400).send({ error: 'Dados insuficientes!' })
-
-    try {
-        const user = await Users.findOne({ email }).select('+password')
-        if (!user)
-            return res.status(400).send({ error: 'Usuário não registrado!' })
-
-        const pass_ok = await bcrypt.compare(password, user.password)
-
-        if (!pass_ok)
-            return res
-                .status(401)
-                .send({ error: 'Erro ao autenticar usuário!' })
-
-        user.password = undefined
-        return res.send({ user, token: createUserToken(user.id) })
-    } catch (err) {
-        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
-    }
-})
+router.post('/auth', login)
 
 export default router
 

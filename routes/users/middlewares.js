@@ -1,7 +1,4 @@
-import jwt from 'jsonwebtoken'
-import config from '../../config/config.js'
 import Users from '../../db/model/User.js'
-import bcrypt from 'bcrypt'
 import utils from '../../authentication/utils.js'
 
 const { createUserToken } = utils
@@ -33,6 +30,17 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const middlewares = { create, getAllUsers }
+const checkEmail = async (req, res) => {
+    const { email } = req.body
+    try {
+        if (await Users.findOne({ email }))
+            return res.status(400).send({ error: 'Usuário já registrado!' })
+        return res.status(200).send({ email: 'Email not found' })
+    } catch (err) {
+        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
+    }
+}
+
+const middlewares = { create, getAllUsers, checkEmail }
 
 export default middlewares

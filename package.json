@@ -26,7 +26,8 @@
         "tabWidth": 4,
         "semi": false,
         "singleQuote": true,
-        "jsxBracketSameLine": false
+        "jsxBracketSameLine": false,
+        "singleAttributePerLine": true
     },
     "devDependencies": {
         "nodemon": "^2.0.18"

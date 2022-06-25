@@ -3,7 +3,7 @@ import Users from '../../db/model/User.js'
 import bcrypt from 'bcrypt'
 import middlewares from './middlewares.js'
 
-const { create, getAllUsers } = middlewares
+const { create, getAllUsers, checkEmail } = middlewares
 
 const router = express.Router()
 
@@ -11,16 +11,7 @@ router.get('/', getAllUsers)
 
 router.post('/create', create)
 
-router.post('/check', async (req, res) => {
-    const { email } = req.body
-    try {
-        if (await Users.findOne({ email }))
-            return res.status(400).send({ error: 'Usuário já registrado!' })
-        return res.status(200).send({ email: 'Email not found' })
-    } catch (err) {
-        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
-    }
-})
+router.post('/check', checkEmail)
 
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body

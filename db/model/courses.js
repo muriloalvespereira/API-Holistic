@@ -11,8 +11,12 @@ const Courses = new Schema(
         startingDate: { type: Date },
         price: { type: String },
         duration: { type: String },
-        level: { type: Array, enum: levelsList },
-        school_ID: { type: Schema.Types.ObjectId, ref: 'School' }
+        level: [{ type: String, enum: levelsList }],
+        school_ID: {
+            type: Schema.Types.ObjectId,
+            ref: 'School',
+            required: true
+        }
     },
     {
         timestamps: true

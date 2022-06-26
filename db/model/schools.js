@@ -20,7 +20,7 @@ const Schools = new Schema(
         telegram: { type: String },
         description: { type: String },
         ratting: { type: Number, min: 0, max: 5 },
-        amenities: { type: Array, enum: amenitiesList }
+        amenities: [{ type: String, enum: amenitiesList }]
     },
     {
         timestamps: true

@@ -1,25 +1,24 @@
 import Users from '../../db/model/User.js'
 import utils from '../../authentication/utils.js'
+import { sanitizeUser } from './utils.js'
 
 const { createUserToken, checkUserPassword } = utils
 
 // CRiar validation do body
-const create = async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password)
-        return res.status(400).send({ error: 'Dados insuficientes!' })
+const create = async (req, res, next) => {
+    const { email } = req.body
 
     try {
         if (await Users.findOne({ email }))
             return res.status(400).send({ error: 'Usuário já registrado!' })
 
-        const user = await Users.create(req.body)
-        user.password = undefined
+        const newUser = sanitizeUser(req.body)
 
-        return res.status(201).send({ user, token: createUserToken(user.id) })
+        const user = await Users.create(newUser)
+
+        return res.status(201).send({ user, success: true })
     } catch (err) {
-        console.log(err)
-        return res.status(500).send({ error: 'Erro ao buscar usuário!' })
+        next(err)
     }
 }
 

@@ -4,7 +4,6 @@ import { sanitizeUser } from './utils.js'
 
 const { createUserToken, checkUserPassword } = utils
 
-// CRiar validation do body
 const create = async (req, res, next) => {
     const { email } = req.body
 
@@ -19,6 +18,48 @@ const create = async (req, res, next) => {
         return res.status(201).send({ user, success: true })
     } catch (err) {
         next(err)
+    }
+}
+
+const emailConfirmation = async (req, res, next) => {
+    try {
+        const { token } = req.params
+        const acc_validation_token = token
+
+        const user = await Users.findOne({ acc_validation_token })
+
+        console.log(user)
+
+        if (user && user.acc_validation_token_expires > Date.now()) {
+            const updatedUser = await Users.findByIdAndUpdate(
+                user._id,
+                {
+                    acc_validation_token: '',
+                    acc_validation_token_expires: null,
+                    acc_confirmed: true
+                },
+                { new: true }
+            )
+
+            if (updatedUser) {
+                res.status(200).send({
+                    success: true,
+                    msg: 'Account confirmed'
+                })
+            } else {
+                res.status(500).send({
+                    success: false,
+                    msg: 'Something went wrong'
+                })
+            }
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Account not found'
+            })
+        }
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -77,6 +118,6 @@ const login = async (req, res, next) => {
     }
 }
 
-const handlers = { create, getAllUsers, checkEmail, login }
+const handlers = { create, getAllUsers, checkEmail, login, emailConfirmation }
 
 export default handlers

@@ -3,7 +3,7 @@ import handlers from './handlers.js'
 import validation from './validation.js'
 
 const { userLoginValidation, userCreationValidation } = validation
-const { create, getAllUsers, checkEmail, login } = handlers
+const { create, getAllUsers, checkEmail, login, emailConfirmation } = handlers
 
 const router = express.Router()
 
@@ -12,6 +12,7 @@ router.route('/').get(getAllUsers).post(userCreationValidation, create)
 router.route('/check').post(checkEmail)
 
 router.route('/login').post(userLoginValidation, login)
+router.route('/:token').put(emailConfirmation)
 
 export default router
 

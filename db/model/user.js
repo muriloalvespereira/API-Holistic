@@ -6,23 +6,27 @@ const UserSchema = new Schema(
     {
         email: { type: String, required: true, unique: true, lowercase: true },
         password: { type: String, select: false, required: true },
+        name: { type: String, required: true },
+        lastName: { type: String, required: true },
         accountType: {
             type: String,
             enum: ['user', 'admin', 'school'],
             default: 'user',
             required: true
         },
-        phone_1: { type: String, required: true },
-        phone_2: { type: String },
-        whatssapp: { type: String },
-        telegram: { type: String },
-        email_2: { type: String },
         cookies: {
             type: String,
             enum: ['essential', 'all'],
             default: 'essential',
             required: true
-        }
+        },
+        phone_1: { type: String, required: true },
+        middleName: { type: String },
+        phone_2: { type: String },
+        whatssapp: { type: String },
+        telegram: { type: String },
+        email_2: { type: String },
+        schoolId: { type: Schema.Types.ObjectId, ref: 'School' }
     },
     {
         timestamps: true

@@ -19,7 +19,8 @@
         "express": "^4.16.4",
         "jsonwebtoken": "^8.5.0",
         "mongoose": "^5.4.17",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "randomstring": "^1.2.2"
     },
     "prettier": {
         "trailingComma": "none",

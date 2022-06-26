@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import { accConfirmEmail } from '../../comm/templates/index.js'
+import { sendEmail } from '../../comm/index.js'
 
 const Schema = mongoose.Schema
 
@@ -43,6 +45,9 @@ UserSchema.pre('save', async function (next) {
     if (!user.isModified('password')) return next()
 
     user.password = await bcrypt.hash(user.password, 10)
+
+    const confirmEmail = accConfirmEmail(user.email, user.acc_validation_token)
+    await sendEmail(confirmEmail)
 
     return next()
 })

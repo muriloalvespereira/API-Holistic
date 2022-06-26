@@ -2,12 +2,12 @@ import express from 'express'
 import handlers from './handlers.js'
 import validation from './validation.js'
 
-const { userLoginValidation } = validation
+const { userLoginValidation, userCreationValidation } = validation
 const { create, getAllUsers, checkEmail, login } = handlers
 
 const router = express.Router()
 
-router.route('/').get(getAllUsers).post(create)
+router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
 router.route('/check').post(checkEmail)
 

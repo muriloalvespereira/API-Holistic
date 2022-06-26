@@ -3,6 +3,7 @@ import utils from '../../authentication/utils.js'
 
 const { createUserToken, checkUserPassword } = utils
 
+// CRiar validation do body
 const create = async (req, res) => {
     const { email, password } = req.body
     if (!email || !password)

@@ -5,7 +5,30 @@ const userLoginValidation = (req, res, next) => {
     }
     next()
 }
+const userCreationValidation = (req, res, next) => {
+    const { email, password, name, lastName, phone_1, accountType, cookies } =
+        req.body
+    const bodyList = [
+        email,
+        password,
+        name,
+        lastName,
+        phone_1,
+        accountType,
+        cookies
+    ]
+    if (
+        bodyList.includes(undefined) ||
+        bodyList.includes(null) ||
+        bodyList.includes('') ||
+        !email.includes('@') ||
+        password.length < 5
+    ) {
+        return res.status(400).send({ success: false, msg: 'Invalid body' })
+    }
+    next()
+}
 
-const validation = { userLoginValidation }
+const validation = { userLoginValidation, userCreationValidation }
 
 export default validation

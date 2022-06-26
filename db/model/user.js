@@ -64,4 +64,14 @@ UserSchema.methods.toJSON = function () {
     return userObject
 }
 
+UserSchema.pre('findOneAndUpdate', async function () {
+    const update = this.getUpdate()
+    const { password: plainPwd } = update
+
+    if (plainPwd) {
+        const password = await bcrypt.hash(plainPwd, 10)
+        this.setUpdate({ ...update, password })
+    }
+})
+
 export default mongoose.model('User', UserSchema, 'test')

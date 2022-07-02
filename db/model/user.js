@@ -30,6 +30,8 @@ const UserSchema = new Schema(
         telegram: { type: String },
         email_2: { type: String },
         acc_confirmed: { type: Boolean, default: false },
+        password_reset_token: { type: String },
+        password_reset_token_expires: { type: Date },
         authToken: { type: String },
         acc_validation_token: { type: String },
         acc_validation_token_expires: { type: Date },
@@ -60,6 +62,8 @@ UserSchema.methods.toJSON = function () {
     delete userObject.__v
     delete userObject.acc_validation_token
     delete userObject.acc_validation_token_expires
+    delete userObject.password_reset_token
+    delete userObject.password_reset_token_expires
 
     return userObject
 }

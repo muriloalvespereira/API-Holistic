@@ -13,7 +13,8 @@ const {
     login,
     emailConfirmation,
     passwordReset,
-    updateUser
+    updateUser,
+    passwordResetRequest
 } = handlers
 
 const router = express.Router()
@@ -21,10 +22,11 @@ const router = express.Router()
 router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
 router.route('/check').post(checkEmail)
-router.route('/reset').put(passwordValidation, passwordReset)
+router.route('/reset').put(passwordResetRequest)
 router.route('/update').put(validateAccess, getUser, updateUser)
 
 router.route('/login').post(userLoginValidation, login)
+router.route('/reset/:resetCode').put(passwordValidation, passwordReset)
 router.route('/:token').put(emailConfirmation)
 
 export default router

@@ -1,6 +1,10 @@
 import Users from '../../db/model/User.js'
 import utils from '../../authentication/utils.js'
 import { sanitizeUser, sanitizeBody } from './utils.js'
+import genTempToken from '../../utils/generateRandomString.js'
+import generateFutureDate from '../../utils/generateFutureDate.js'
+import resetPasswordTemp from '../../comm/templates/resetPassword.js'
+import sendEmail from '../../comm/sendEmail.js'
 
 const { createUserToken, checkUserPassword, setAuthCookie } = utils
 
@@ -27,8 +31,6 @@ const emailConfirmation = async (req, res, next) => {
         const acc_validation_token = token
 
         const user = await Users.findOne({ acc_validation_token })
-
-        console.log(user)
 
         if (user && user.acc_validation_token_expires > Date.now()) {
             const updatedUser = await Users.findByIdAndUpdate(
@@ -84,18 +86,67 @@ const checkEmail = async (req, res, next) => {
 }
 
 const passwordReset = async (req, res, next) => {
-    const { email, password } = req.body
+    const { resetCode } = req.params
+    const { password } = req.body
     try {
-        const updatedUser = await Users.findOneAndUpdate(
-            { email },
-            { password }
-        )
-        console.log(updatedUser)
+        const user = await Users.findOne({ password_reset_token: resetCode })
 
-        if (updatedUser) {
+        if (user && user.password_reset_token_expires > Date.now()) {
+            const updatedUser = await Users.findByIdAndUpdate(
+                user._id,
+                {
+                    password_reset_token_expires: '',
+                    password_reset_token: '',
+                    password
+                },
+                { new: true }
+            )
+
+            if (updatedUser) {
+                return res.status(200).send({
+                    success: true,
+                    msg: 'Password reset successful'
+                })
+            }
+        } else {
+            return res.status(400).send({
+                success: false,
+                msg: 'Usuário não encontrado!'
+            })
+        }
+    } catch (err) {
+        next(err)
+    }
+}
+
+const passwordResetRequest = async (req, res, next) => {
+    const { email } = req.body
+    try {
+        const password_reset_token = genTempToken()
+        const password_reset_token_expires = generateFutureDate(60)
+        const user = await Users.findOneAndUpdate(
+            { email },
+            {
+                password_reset_token,
+                password_reset_token_expires
+            },
+
+            { new: true }
+        )
+
+        console.log(user, 'user')
+
+        const emailMsg = resetPasswordTemp(
+            user.email,
+            user.password_reset_token
+        )
+
+        await sendEmail(emailMsg)
+
+        if (user) {
             res.status(200).send({
                 success: true,
-                msg: 'Senha alterada com sucesso!'
+                msg: 'Password reset request sent'
             })
         } else {
             res.status(400).send({
@@ -107,6 +158,7 @@ const passwordReset = async (req, res, next) => {
         next(err)
     }
 }
+
 const updateUser = async (req, res, next) => {
     const sanitizedBody = sanitizeBody(req.body)
     try {
@@ -167,7 +219,8 @@ const handlers = {
     login,
     emailConfirmation,
     passwordReset,
-    updateUser
+    updateUser,
+    passwordResetRequest
 }
 
 export default handlers

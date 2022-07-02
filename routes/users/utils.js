@@ -1,14 +1,10 @@
-import { genTempToken } from '../../utils/index.js'
+import { generateFutureDate, genTempToken } from '../../utils/index.js'
 import Users from '../../db/model/User.js'
 
 export const sanitizeUser = (body) => {
     const acc_validation_token = genTempToken()
-    var minutesToAdd = 15
-    var currentDate = new Date()
 
-    const acc_validation_token_expires = new Date(
-        currentDate.getTime() + minutesToAdd * 60000
-    )
+    const acc_validation_token_expires = generateFutureDate()
 
     return {
         email: body.email,

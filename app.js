@@ -5,6 +5,8 @@ import usersRoute from './routes/users/index.js'
 import schoolsRoute from './routes/schools/index.js'
 import errorHandlers from './utils/errors_handlers.js'
 import './db/coon.js'
+import cookieParser from 'cookie-parser'
+import corsConfig from './config/cors.js'
 
 const app = express()
 
@@ -13,7 +15,8 @@ const port = process.env.PORT || 3005
 //BODY PARSER
 app.use(bodyParser.json())
 
-app.use(cors())
+app.use(cors(corsConfig))
+app.use(cookieParser())
 // app.use(function (req, res, next) {
 //     res.header('Access-Control-Allow-Credentials', true);
 //     res.header('Access-Control-Allow-Origin', 'https://holistic.vercel.app');

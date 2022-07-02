@@ -1,5 +1,7 @@
 import express from 'express'
+import validateAccess from '../../authentication/validateAccess.js'
 import handlers from './handlers.js'
+import { getUser } from './utils.js'
 import validation from './validation.js'
 
 const { userLoginValidation, userCreationValidation, passwordValidation } =
@@ -20,7 +22,7 @@ router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
 router.route('/check').post(checkEmail)
 router.route('/reset').put(passwordValidation, passwordReset)
-router.route('/update').put(updateUser)
+router.route('/update').put(validateAccess, getUser, updateUser)
 
 router.route('/login').post(userLoginValidation, login)
 router.route('/:token').put(emailConfirmation)

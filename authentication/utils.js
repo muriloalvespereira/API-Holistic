@@ -12,9 +12,19 @@ const checkUserPassword = async (password, userPassword) => {
     return await bcrypt.compare(password, userPassword)
 }
 
+const setAuthCookie = (res, authToken) => {
+    res.cookie('Authentication', `Bearer ${authToken}`, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: false,
+        sameSite: false,
+        secure: false
+    })
+}
+
 const utils = {
     createUserToken,
-    checkUserPassword
+    checkUserPassword,
+    setAuthCookie
 }
 
 export default utils

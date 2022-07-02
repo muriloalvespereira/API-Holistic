@@ -2,7 +2,7 @@ import Users from '../../db/model/User.js'
 import utils from '../../authentication/utils.js'
 import { sanitizeUser, sanitizeBody } from './utils.js'
 
-const { createUserToken, checkUserPassword } = utils
+const { createUserToken, checkUserPassword, setAuthCookie } = utils
 
 const create = async (req, res, next) => {
     const { email } = req.body
@@ -111,8 +111,7 @@ const updateUser = async (req, res, next) => {
     const sanitizedBody = sanitizeBody(req.body)
     try {
         const updatedUser = await Users.findByIdAndUpdate(
-            // req.user._id,
-            '626ee6294c031200165a301e',
+            req.user._id,
             sanitizedBody
         )
         console.log(updatedUser, 'updatedUser')
@@ -153,12 +152,7 @@ const login = async (req, res, next) => {
 
         user.password = undefined
 
-        res.cookie(`Authentication`, createUserToken(user.id), {
-            maxAge: 60 * 60 * 60 * 24 * 7,
-            secure: true,
-            httpOnly: true,
-            sameSite: false
-        })
+        setAuthCookie(res, createUserToken(user._id))
 
         return res.send({ success: true, msg: 'Cookie set' })
     } catch (err) {

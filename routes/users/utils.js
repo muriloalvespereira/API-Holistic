@@ -1,4 +1,5 @@
 import { genTempToken } from '../../utils/index.js'
+import Users from '../../db/model/User.js'
 
 export const sanitizeUser = (body) => {
     const acc_validation_token = genTempToken()
@@ -33,5 +34,21 @@ export const sanitizeBody = (body) => {
         whatssapp: body.whatssapp,
         telegram: body.telegram,
         email_2: body.email_2
+    }
+}
+
+export const getUser = async (req, res, next) => {
+    try {
+        const user = await Users.findById(req.acc_id)
+        if (!user || !req.acc_id) {
+            return res.status(400).send({
+                success: false,
+                msg: 'Usuário não encontrado!'
+            })
+        }
+        req.user = user
+        next()
+    } catch (error) {
+        next(error)
     }
 }

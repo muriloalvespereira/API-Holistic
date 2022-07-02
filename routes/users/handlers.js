@@ -85,6 +85,33 @@ const checkEmail = async (req, res) => {
     }
 }
 
+const passwordReset = async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const updatedUser = await Users.findOneAndUpdate(
+            { email },
+            { password }
+        )
+        console.log(updatedUser)
+
+        if (updatedUser) {
+            res.status(200).send({
+                success: true,
+                msg: 'Senha alterada com sucesso!'
+            })
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Usuário não encontrado!'
+            })
+        }
+    } catch (err) {
+        return res
+            .status(500)
+            .send({ success: false, error: 'Erro ao buscar usuário!' })
+    }
+}
+
 const login = async (req, res, next) => {
     const { email, password } = req.body
 
@@ -118,6 +145,13 @@ const login = async (req, res, next) => {
     }
 }
 
-const handlers = { create, getAllUsers, checkEmail, login, emailConfirmation }
+const handlers = {
+    create,
+    getAllUsers,
+    checkEmail,
+    login,
+    emailConfirmation,
+    passwordReset
+}
 
 export default handlers

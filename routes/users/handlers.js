@@ -1,6 +1,6 @@
 import Users from '../../db/model/User.js'
 import utils from '../../authentication/utils.js'
-import { sanitizeUser } from './utils.js'
+import { sanitizeUser, sanitizeBody } from './utils.js'
 
 const { createUserToken, checkUserPassword } = utils
 
@@ -63,29 +63,27 @@ const emailConfirmation = async (req, res, next) => {
     }
 }
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
     try {
         const users = await Users.find({})
         return res.send(users)
     } catch (err) {
-        return res.status(500).send({ error: 'Erro na consulta de usuários!' })
+        next(err)
     }
 }
 
-const checkEmail = async (req, res) => {
+const checkEmail = async (req, res, next) => {
     const { email } = req.body
     try {
         if (await Users.findOne({ email }))
             return res.status(400).send({ error: 'Usuário já registrado!' })
         return res.status(200).send({ email: 'Email not found' })
     } catch (err) {
-        return res
-            .status(500)
-            .send({ success: false, error: 'Erro ao buscar usuário!' })
+        next(err)
     }
 }
 
-const passwordReset = async (req, res) => {
+const passwordReset = async (req, res, next) => {
     const { email, password } = req.body
     try {
         const updatedUser = await Users.findOneAndUpdate(
@@ -106,9 +104,32 @@ const passwordReset = async (req, res) => {
             })
         }
     } catch (err) {
-        return res
-            .status(500)
-            .send({ success: false, error: 'Erro ao buscar usuário!' })
+        next(err)
+    }
+}
+const updateUser = async (req, res, next) => {
+    const sanitizedBody = sanitizeBody(req.body)
+    try {
+        const updatedUser = await Users.findByIdAndUpdate(
+            // req.user._id,
+            '626ee6294c031200165a301e',
+            sanitizedBody
+        )
+        console.log(updatedUser, 'updatedUser')
+
+        if (updatedUser) {
+            res.status(200).send({
+                success: true,
+                msg: 'Usuário atualizado com sucesso!'
+            })
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Usuário não atualizado!'
+            })
+        }
+    } catch (err) {
+        next(err)
     }
 }
 
@@ -151,7 +172,8 @@ const handlers = {
     checkEmail,
     login,
     emailConfirmation,
-    passwordReset
+    passwordReset,
+    updateUser
 }
 
 export default handlers

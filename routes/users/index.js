@@ -10,7 +10,8 @@ const {
     checkEmail,
     login,
     emailConfirmation,
-    passwordReset
+    passwordReset,
+    updateUser
 } = handlers
 
 const router = express.Router()
@@ -19,6 +20,7 @@ router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
 router.route('/check').post(checkEmail)
 router.route('/reset').put(passwordValidation, passwordReset)
+router.route('/update').put(updateUser)
 
 router.route('/login').post(userLoginValidation, login)
 router.route('/:token').put(emailConfirmation)

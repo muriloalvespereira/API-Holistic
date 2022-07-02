@@ -21,3 +21,17 @@ export const sanitizeUser = (body) => {
         acc_validation_token_expires
     }
 }
+
+export const sanitizeBody = (body) => {
+    return {
+        email: body.email,
+        name: body.name,
+        lastName: body.lastName,
+        middleName: body.middleName,
+        phone_1: body.phone_1,
+        phone_2: body.phone_2,
+        whatssapp: body.whatssapp,
+        telegram: body.telegram,
+        email_2: body.email_2
+    }
+}

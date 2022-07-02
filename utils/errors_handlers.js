@@ -1,4 +1,5 @@
 const statusErrorMiddleware = (err, req, res, next) => {
+    console.log(err, 'FROM statusErrorMiddleware Middleware')
     if (err.status <= 404 && err.status >= 400) {
         res.status(err.status).send({
             success: false,

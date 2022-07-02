@@ -29,6 +29,18 @@ const userCreationValidation = (req, res, next) => {
     next()
 }
 
-const validation = { userLoginValidation, userCreationValidation }
+const passwordValidation = (req, res, next) => {
+    const { password } = req.body
+    if (!password || password.length < 6) {
+        return res.status(400).send({ success: false, msg: 'Invalid body' })
+    }
+    next()
+}
+
+const validation = {
+    userLoginValidation,
+    userCreationValidation,
+    passwordValidation
+}
 
 export default validation

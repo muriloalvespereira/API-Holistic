@@ -2,7 +2,8 @@ import express from 'express'
 import handlers from './handlers.js'
 import validation from './validation.js'
 
-const { userLoginValidation, userCreationValidation } = validation
+const { userLoginValidation, userCreationValidation, passwordValidation } =
+    validation
 const {
     create,
     getAllUsers,
@@ -17,7 +18,7 @@ const router = express.Router()
 router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
 router.route('/check').post(checkEmail)
-router.route('/reset').put(passwordReset)
+router.route('/reset').put(passwordValidation, passwordReset)
 
 router.route('/login').post(userLoginValidation, login)
 router.route('/:token').put(emailConfirmation)

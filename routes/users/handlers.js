@@ -213,6 +213,17 @@ const login = async (req, res, next) => {
 }
 const saveAvatar = async (req, res, next) => {
     try {
+        const user = await Users.findByIdAndUpdate(
+            { _id: req.user._id },
+            { avatar: req.file.path },
+            { new: true }
+        )
+
+        if (user) {
+            res.status(200).send({ success: true, user })
+        } else {
+            res.status(400).send({ success: false, msg: 'Avatar not saved' })
+        }
     } catch (err) {
         next(err)
     }

@@ -1,4 +1,5 @@
 import express from 'express'
+import multer from 'multer'
 import validateAccess from '../../authentication/validateAccess.js'
 import { cloudAvatarsStorage } from '../../config/cloudStorage.js'
 import handlers from './handlers.js'

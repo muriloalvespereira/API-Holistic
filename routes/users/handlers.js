@@ -211,6 +211,12 @@ const login = async (req, res, next) => {
         next(err)
     }
 }
+const saveAvatar = async (req, res, next) => {
+    try {
+    } catch (err) {
+        next(err)
+    }
+}
 
 const handlers = {
     create,
@@ -220,7 +226,8 @@ const handlers = {
     emailConfirmation,
     passwordReset,
     updateUser,
-    passwordResetRequest
+    passwordResetRequest,
+    saveAvatar
 }
 
 export default handlers

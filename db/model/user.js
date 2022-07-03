@@ -24,6 +24,7 @@ const UserSchema = new Schema(
             required: true
         },
         phone_1: { type: String, required: true },
+        avatar: { type: String },
         middleName: { type: String },
         phone_2: { type: String },
         whatssapp: { type: String },

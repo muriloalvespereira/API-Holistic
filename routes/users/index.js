@@ -1,5 +1,6 @@
 import express from 'express'
 import validateAccess from '../../authentication/validateAccess.js'
+import { cloudAvatarsStorage } from '../../config/cloudStorage.js'
 import handlers from './handlers.js'
 import { getUser } from './utils.js'
 import validation from './validation.js'
@@ -14,7 +15,8 @@ const {
     emailConfirmation,
     passwordReset,
     updateUser,
-    passwordResetRequest
+    passwordResetRequest,
+    saveAvatar
 } = handlers
 
 const router = express.Router()
@@ -24,6 +26,14 @@ router.route('/').get(getAllUsers).post(userCreationValidation, create)
 router.route('/check').post(checkEmail)
 router.route('/reset').put(passwordResetRequest)
 router.route('/update').put(validateAccess, getUser, updateUser)
+router
+    .route('/avatar')
+    .put(
+        validateAccess,
+        getUser,
+        multer({ storage: cloudAvatarsStorage }).single('avatar'),
+        saveAvatar
+    )
 
 router.route('/login').post(userLoginValidation, login)
 router.route('/reset/:resetCode').put(passwordValidation, passwordReset)

@@ -22,11 +22,18 @@ const {
 
 const router = express.Router()
 
+//get all users
+// create user
+
 router.route('/').get(getAllUsers).post(userCreationValidation, create)
 
+// check email for acc creation
 router.route('/check').post(checkEmail)
+// request reset password
 router.route('/reset').put(passwordResetRequest)
+// update user
 router.route('/update').put(validateAccess, getUser, updateUser)
+// create avatar
 router
     .route('/avatar')
     .put(
@@ -35,9 +42,12 @@ router
         multer({ storage: cloudAvatarsStorage }).single('avatar'),
         saveAvatar
     )
-
+// login
 router.route('/login').post(userLoginValidation, login)
+// reset password code
+
 router.route('/reset/:resetCode').put(passwordValidation, passwordReset)
+// acc confirmation
 router.route('/:token').put(emailConfirmation)
 
 export default router

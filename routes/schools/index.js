@@ -1,13 +1,22 @@
 import express from 'express'
 import handlers from './handlers.js'
-
-const { getSchools } = handlers
+import { isSchool } from './utils.js'
+import validateAccess from '../../authentication/validateAccess.js'
+import { getUser } from '../users/utils.js'
+const { getSchools, create, updateSchool } = handlers
 
 const router = express.Router()
 
-//FUNÇÕES AUXILIARES
+// update school
 
-router.get('/', getSchools)
+// add click
+
+router
+    .route('/')
+    .get(getSchools)
+    .post(validateAccess, getUser, isSchool, create)
+
+router.route('/update').put(validateAccess, getUser, isSchool, updateSchool)
 export default router
 
 /*

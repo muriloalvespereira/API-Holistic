@@ -1,4 +1,5 @@
 import Schools from '../../db/model/schools.js'
+import { sanitizeSchool } from './utils.js'
 
 const getSchools = async (req, res, next) => {
     try {
@@ -20,6 +21,43 @@ const getSchools = async (req, res, next) => {
     }
 }
 
-const handlers = { getSchools }
+const create = async (req, res, next) => {
+    try {
+        const newSchool = sanitizeSchool(req.body)
+
+        const school = await Schools.create(newSchool)
+
+        return res.status(201).send({ school, success: true })
+    } catch (err) {
+        next(err)
+    }
+}
+
+const updateSchool = async (req, res, next) => {
+    const schoolBody = sanitizeSchool(req.body)
+    try {
+        const updatedSchool = await Schools.findByIdAndUpdate(
+            req.user.schoolId,
+            schoolBody
+        )
+        console.log(updatedSchool, 'updatedSchool')
+
+        if (updatedSchool) {
+            res.status(200).send({
+                success: true,
+                msg: 'Escola atualizado com sucesso!'
+            })
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Escola não atualizado!'
+            })
+        }
+    } catch (err) {
+        next(err)
+    }
+}
+
+const handlers = { getSchools, updateSchool }
 
 export default handlers

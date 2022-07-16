@@ -58,6 +58,45 @@ const updateSchool = async (req, res, next) => {
     }
 }
 
-const handlers = { getSchools, updateSchool }
+const addClick = async (req, res, next) => {
+    try {
+        const { schoolID } = req.params
+        const userID = req.user._id
+
+        const isClicked = await Schools.find({ _id: schoolID, clicks: userID })
+
+        if (isClicked === 0) {
+            const updatedSchool = await Schools.findByIdAndUpdate(
+                schoolID,
+                {
+                    $push: {
+                        clicks: userID
+                    }
+                },
+                { new: true }
+            )
+            if (updatedSchool) {
+                res.status(200).send({
+                    success: true,
+                    msg: 'Click adicionado com sucesso!'
+                })
+            } else {
+                res.status(400).send({
+                    success: false,
+                    msg: 'Click não adicionado!'
+                })
+            }
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Click não adicionado!'
+            })
+        }
+    } catch (err) {
+        next(err)
+    }
+}
+
+const handlers = { getSchools, create, updateSchool, addClick }
 
 export default handlers

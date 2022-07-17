@@ -1,4 +1,5 @@
 import Schools from '../../db/model/schools.js'
+import User from '../../db/model/User.js'
 import { sanitizeSchool } from './utils.js'
 
 const getSchools = async (req, res, next) => {
@@ -27,7 +28,21 @@ const create = async (req, res, next) => {
 
         const school = await Schools.create(newSchool)
 
-        return res.status(201).send({ school, success: true })
+        const updateUser = await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                schoolId: school._id
+            },
+            { new: true }
+        ) //.populate('schoolId')
+
+        if (updateUser) {
+            return res.status(201).send({ school, updateUser, success: true })
+        } else {
+            return res
+                .status(400)
+                .send({ success: 'false', msg: 'Escola não criada!' })
+        }
     } catch (err) {
         next(err)
     }
@@ -38,7 +53,8 @@ const updateSchool = async (req, res, next) => {
     try {
         const updatedSchool = await Schools.findByIdAndUpdate(
             req.user.schoolId,
-            schoolBody
+            schoolBody,
+            { new: true }
         )
         console.log(updatedSchool, 'updatedSchool')
 
@@ -54,6 +70,7 @@ const updateSchool = async (req, res, next) => {
             })
         }
     } catch (err) {
+        console.log(err)
         next(err)
     }
 }

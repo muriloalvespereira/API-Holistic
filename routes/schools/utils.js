@@ -8,6 +8,17 @@ export const isSchool = (req, res, next) => {
     next()
 }
 
+export const hasSchool = (req, res, next) => {
+    if (!req.user.schoolId) {
+        next()
+    } else {
+        return res.status(400).send({
+            success: false,
+            msg: 'School already created'
+        })
+    }
+}
+
 export const sanitizeSchool = (school) => {
     return {
         title: school.title,

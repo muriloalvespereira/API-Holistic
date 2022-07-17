@@ -28,4 +28,4 @@ const Schools = new Schema(
     }
 )
 
-export default mongoose.model('School', Schools, 'allschools')
+export default mongoose.model('School', Schools)

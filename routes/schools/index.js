@@ -1,6 +1,6 @@
 import express from 'express'
 import handlers from './handlers.js'
-import { isSchool } from './utils.js'
+import { hasSchool, isSchool } from './utils.js'
 import validateAccess from '../../authentication/validateAccess.js'
 import { getUser } from '../users/utils.js'
 const { getSchools, create, updateSchool, addClick } = handlers
@@ -10,9 +10,11 @@ const router = express.Router()
 router
     .route('/')
     .get(getSchools)
-    .post(validateAccess, getUser, isSchool, create)
+    .post(validateAccess, getUser, isSchool, hasSchool, create)
 
 router.route('/update').put(validateAccess, getUser, isSchool, updateSchool)
+
+//test later
 router.route('/click/:schoolID').put(validateAccess, getUser, addClick)
 export default router
 

@@ -60,6 +60,7 @@ UserSchema.methods.toJSON = function () {
     const userObject = userDocument.toObject()
 
     delete userObject.password
+    delete userObject._id
     delete userObject.__v
     delete userObject.acc_validation_token
     delete userObject.acc_validation_token_expires

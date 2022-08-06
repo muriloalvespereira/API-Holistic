@@ -191,6 +191,7 @@ const login = async (req, res, next) => {
 
     try {
         const user = await Users.findOne({ email }).select('+password')
+
         if (!user) {
             return res
                 .status(404)
@@ -204,11 +205,9 @@ const login = async (req, res, next) => {
                 .status(401)
                 .send({ success: false, msg: 'Erro ao autenticar usuário!' })
 
-        user.password = undefined
-
         setAuthCookie(res, createUserToken(user._id))
 
-        return res.send({ success: true, msg: 'Cookie set' })
+        return res.send({ success: true, msg: 'Cookie set', user })
     } catch (err) {
         next(err)
     }

@@ -30,7 +30,9 @@ const emailConfirmation = async (req, res, next) => {
         const { token } = req.params
         const acc_validation_token = token
 
-        const user = await Users.findOne({ acc_validation_token })
+        const user = await Users.findOne({
+            acc_validation_token: token
+        })
 
         if (user && user.acc_validation_token_expires > Date.now()) {
             const updatedUser = await Users.findByIdAndUpdate(

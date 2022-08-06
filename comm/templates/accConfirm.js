@@ -12,7 +12,7 @@ const accConfirmEmail = (acc_email, tempToken) => {
                   <title></title>
               </head>
                 <body>
-                  <a href="${FRONT_END_URL}/accounts/confirmation/${tempToken}">${FRONT_END_URL}/accounts/confirmation/${tempToken}</a>
+                  <a href="${FRONT_END_URL}/confirmation/${tempToken}">${FRONT_END_URL}/confirmation/${tempToken}</a>
                 </body>
             </html>
           `

@@ -5,10 +5,20 @@ import { sanitizeSchool } from './utils.js'
 const getSchools = async (req, res, next) => {
     try {
         const { q } = req.query
-
-        const schools = await Schools.find({
-            $text: { $search: q, $caseSensitive: false }
+        let results = []
+        res.status(400).send({
+            success: false,
+            msg: 'Nenhuma escola encontrada!'
         })
+        return
+        if (q) {
+            results = await Schools.find({
+                $text: { $search: q, $caseSensitive: false }
+            })
+        } else {
+            results = await Schools.find()
+        }
+
         // const keys = ["title", "city", "country"];
         // const search = (data) => {
         //   return data.filter((item) =>
@@ -16,7 +26,7 @@ const getSchools = async (req, res, next) => {
         //   );
         // };
 
-        return res.send(schools.splice(0, 4))
+        return res.send(results)
     } catch (err) {
         next(err)
     }

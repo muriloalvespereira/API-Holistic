@@ -21,7 +21,7 @@
         "dotenv": "^10.0.0",
         "express": "^4.16.4",
         "jsonwebtoken": "^8.5.0",
-        "mongoose": "^5.4.17",
+        "mongoose": "^6.5.1",
         "multer": "^1.4.5-lts.1",
         "multer-storage-cloudinary": "^4.0.0",
         "prettier": "^2.7.1",

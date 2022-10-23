@@ -20,16 +20,36 @@ export const hasSchool = (req, res, next) => {
 }
 
 export const sanitizeSchool = (school) => {
+    const {
+        schoolName,
+        city,
+        country,
+        website,
+        description,
+        email,
+        whatsapp,
+        telegram,
+        youTube,
+        tikTok,
+        facebook,
+        instagram,
+        amenities,
+        localities
+    } = school
     return {
-        title: school.title,
-        city: school.city,
-        country: school.country,
-        website: school.website,
-        email: school.email,
-        whatssapp: school.whatssapp,
-        telegram: school.telegram,
-        description: school.description,
-        ratting: 0,
-        amenities: school.amenities
+        schoolName,
+        city,
+        country,
+        website,
+        description,
+        email,
+        whatsapp,
+        telegram,
+        youTube,
+        tikTok,
+        facebook,
+        instagram,
+        amenities,
+        localities
     }
 }

@@ -34,7 +34,8 @@ const Schools = new Schema(
         cert_quart: { type: String },
         amenities: [{ type: String, enum: amenitiesList }],
         localities: [{ type: String }],
-        clicks: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
+        clicks: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
+        schoolUser: { type: Schema.Types.ObjectId, ref: 'Users' }
     },
     {
         timestamps: true

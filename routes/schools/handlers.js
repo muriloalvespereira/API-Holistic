@@ -36,7 +36,10 @@ const create = async (req, res, next) => {
     try {
         const newSchool = sanitizeSchool(req.body)
 
-        const school = await Schools.create(newSchool)
+        const school = await Schools.create({
+            schoolUser: req.user._id,
+            ...newSchool
+        })
 
         const updateUser = await User.findByIdAndUpdate(
             req.user._id,

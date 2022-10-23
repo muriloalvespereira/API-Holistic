@@ -11,15 +11,16 @@ const amenitiesList = [
 
 const Schools = new Schema(
     {
-        title: { type: String, required: true },
+        schoolName: { type: String, required: true },
         city: { type: String, required: true },
         country: { type: String, required: true },
         website: { type: String },
+        description: { type: String },
         email: { type: String, lowercase: true },
-        whatssapp: { type: String },
+        whatsapp: { type: String },
         telegram: { type: String },
         youTube: { type: String },
-        Tiktok: { type: String },
+        tikTok: { type: String },
         facebook: { type: String },
         instagram: { type: String },
         logo: { type: String },
@@ -31,9 +32,8 @@ const Schools = new Schema(
         cert_sec: { type: String },
         cert_third: { type: String },
         cert_quart: { type: String },
-        description: { type: String },
         amenities: [{ type: String, enum: amenitiesList }],
-        localidates: [{ type: String }],
+        localities: [{ type: String }],
         clicks: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
     },
     {

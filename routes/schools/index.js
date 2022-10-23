@@ -3,6 +3,11 @@ import handlers from './handlers.js'
 import { hasSchool, isSchool } from './utils.js'
 import validateAccess from '../../authentication/validateAccess.js'
 import { getUser } from '../users/utils.js'
+import {
+    cloudSchoolsStorage,
+    schoolMulterList
+} from '../../config/cloudStorage.js'
+import multer from 'multer'
 const { getSchools, create, updateSchool, addClick } = handlers
 
 const router = express.Router()
@@ -10,7 +15,14 @@ const router = express.Router()
 router
     .route('/')
     .get(getSchools)
-    .post(validateAccess, getUser, isSchool, hasSchool, create)
+    .post(
+        validateAccess,
+        getUser,
+        isSchool,
+        hasSchool,
+        multer({ storage: cloudSchoolsStorage }).fields(schoolMulterList),
+        create
+    )
 
 router.route('/update').put(validateAccess, getUser, isSchool, updateSchool)
 

@@ -38,7 +38,16 @@ const create = async (req, res, next) => {
 
         const school = await Schools.create({
             schoolUser: req.user._id,
-            ...newSchool
+            ...newSchool,
+            logo: req.files.logo[0].path,
+            photo_main: req.files.photo_main[0].path,
+            photo_sec: req.files.photo_sec[0].path,
+            photo_third: req.files.photo_third[0].path,
+            photo_quart: req.files.photo_quart[0].path,
+            cert_main: req.files.cert_main[0].path,
+            cert_sec: req.files.cert_sec[0].path,
+            cert_third: req.files.cert_third[0].path,
+            cert_quart: req.files.cert_quart[0].path
         })
 
         const updateUser = await User.findByIdAndUpdate(

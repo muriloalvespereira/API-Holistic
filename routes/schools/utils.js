@@ -49,7 +49,7 @@ export const sanitizeSchool = (school) => {
         tikTok,
         facebook,
         instagram,
-        amenities,
-        localities
+        amenities: JSON.parse(amenities),
+        localities: JSON.parse(localities)
     }
 }

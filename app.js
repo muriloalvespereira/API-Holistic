@@ -7,6 +7,7 @@ import errorHandlers from './utils/errors_handlers.js'
 import './db/coon.js'
 import cookieParser from 'cookie-parser'
 import corsConfig from './config/cors.js'
+import morgan from 'morgan'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json())
 
 app.use(cors(corsConfig))
 app.use(cookieParser())
+app.use(morgan('dev'))
 
 app.use('/users', usersRoute)
 app.use('/schools', schoolsRoute)

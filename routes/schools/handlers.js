@@ -6,11 +6,11 @@ const getSchools = async (req, res, next) => {
     try {
         const { q } = req.query
         let results = []
-        res.status(400).send({
-            success: false,
-            msg: 'Nenhuma escola encontrada!'
-        })
-        return
+        // res.status(400).send({
+        //     success: false,
+        //     msg: 'Nenhuma escola encontrada!'
+        // })
+        
         if (q) {
             results = await Schools.find({
                 $text: { $search: q, $caseSensitive: false }

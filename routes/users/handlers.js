@@ -205,9 +205,10 @@ const login = async (req, res, next) => {
                 .status(401)
                 .send({ success: false, msg: 'Erro ao autenticar usuário!' })
 
-        setAuthCookie(res, createUserToken(user._id))
+                const userToken = createUserToken(user._id)
 
-        return res.send({ success: true, msg: 'Cookie set', user })
+
+        return res.send({ success: true, userToken, user })
     } catch (err) {
         next(err)
     }

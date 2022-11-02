@@ -190,7 +190,9 @@ const login = async (req, res, next) => {
     const { email, password } = req.body
 
     try {
-        const user = await Users.findOne({ email }).select('+password')
+        const user = await Users.findOne({ email, acc_confirmed: true }).select(
+            '+password'
+        )
 
         if (!user) {
             return res
@@ -205,8 +207,7 @@ const login = async (req, res, next) => {
                 .status(401)
                 .send({ success: false, msg: 'Erro ao autenticar usuário!' })
 
-                const userToken = createUserToken(user._id)
-
+        const userToken = createUserToken(user._id)
 
         return res.send({ success: true, userToken, user })
     } catch (err) {

@@ -10,10 +10,13 @@ const getSchools = async (req, res, next) => {
         //     success: false,
         //     msg: 'Nenhuma escola encontrada!'
         // })
-        
+
         if (q) {
+            //schoolName
+            //city
+            const re = new RegExp(q, 'i')
             results = await Schools.find({
-                $text: { $search: q, $caseSensitive: false }
+                $or: [{ schoolName: re }, { city: re }]
             })
         } else {
             results = await Schools.find()

@@ -5,6 +5,7 @@ import genTempToken from '../../utils/generateRandomString.js'
 import generateFutureDate from '../../utils/generateFutureDate.js'
 import resetPasswordTemp from '../../comm/templates/resetPassword.js'
 import sendEmail from '../../comm/sendEmail.js'
+import mongoose from 'mongoose'
 
 const { createUserToken, checkUserPassword, setAuthCookie } = utils
 
@@ -231,6 +232,37 @@ const saveAvatar = async (req, res, next) => {
         next(err)
     }
 }
+const toggleFavouriteSchool = async (req, res, next) => {
+    try {
+        const schoolID = req.query.schoolID
+        const isAdd = req.query.add.match(/true/i)
+
+        const mongoQuery = {
+            _id: req.user._id,
+            favouriteSchools: isAdd
+                ? { $nin: mongoose.Types.ObjectId(schoolID) }
+                : { $in: mongoose.Types.ObjectId(schoolID) }
+        }
+        const operation = isAdd
+            ? { $push: { favouriteSchools: schoolID } }
+            : { $pull: { favouriteSchools: schoolID } }
+        const options = { new: true }
+
+        const user = await Users.findOneAndUpdate(
+            mongoQuery,
+            operation,
+            options
+        )
+
+        if (user) {
+            res.status(200).send({ success: true, user })
+        } else {
+            res.status(400).send({ success: false, msg: 'Invalid operation' })
+        }
+    } catch (err) {
+        next(err)
+    }
+}
 
 const handlers = {
     create,
@@ -241,7 +273,8 @@ const handlers = {
     passwordReset,
     updateUser,
     passwordResetRequest,
-    saveAvatar
+    saveAvatar,
+    toggleFavouriteSchool
 }
 
 export default handlers

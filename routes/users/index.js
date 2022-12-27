@@ -17,7 +17,8 @@ const {
     passwordReset,
     updateUser,
     passwordResetRequest,
-    saveAvatar
+    saveAvatar,
+    toggleFavouriteSchool
 } = handlers
 
 const router = express.Router()
@@ -33,6 +34,8 @@ router.route('/check').post(checkEmail)
 router.route('/reset').put(passwordResetRequest)
 // update user
 router.route('/update').put(validateAccess, getUser, updateUser)
+// handle favourites schools
+router.route('/favourites').put(validateAccess, getUser, toggleFavouriteSchool)
 // create avatar
 router
     .route('/avatar')

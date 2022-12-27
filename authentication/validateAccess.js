@@ -14,13 +14,13 @@ const verifyAuthorizationToken = (token) => {
 
 const validateAccess = async (req, res, next) => {
     try {
-        if (!req.cookies?.Authentication) {
+        if (!req.headers?.authorization) {
             return res
                 .status(401)
                 .send({ success: false, error: 'Token missing' })
         }
 
-        const authToken = req.cookies.Authentication.split(' ')[1]
+        const authToken = req.headers.authorization.split(' ')[1]
         const tokenData = verifyAuthorizationToken(authToken)
         if (tokenData?.id) {
             req.acc_id = tokenData.id

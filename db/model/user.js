@@ -36,7 +36,8 @@ const UserSchema = new Schema(
         authToken: { type: String },
         acc_validation_token: { type: String },
         acc_validation_token_expires: { type: Date },
-        schoolId: { type: Schema.Types.ObjectId, ref: 'School' }
+        schoolId: { type: Schema.Types.ObjectId, ref: 'School' },
+        favouriteSchools: [{ type: Schema.Types.ObjectId, ref: 'School' }]
     },
     {
         timestamps: true
@@ -72,11 +73,13 @@ UserSchema.methods.toJSON = function () {
 
 UserSchema.pre('findOneAndUpdate', async function () {
     const update = this.getUpdate()
-    const { password: plainPwd } = update
+    if (update.password) {
+        const { password: plainPwd } = update
 
-    if (plainPwd) {
-        const password = await bcrypt.hash(plainPwd, 10)
-        this.setUpdate({ ...update, password })
+        if (plainPwd) {
+            const password = await bcrypt.hash(plainPwd, 10)
+            this.setUpdate({ ...update, password })
+        }
     }
 })
 

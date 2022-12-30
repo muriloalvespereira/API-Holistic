@@ -1,14 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
-const amenitiesList = [
-    'amenity_1',
-    'amenity_2',
-    'amenity_3',
-    'amenity_4',
-    'amenity_5'
-]
-
 const Schools = new Schema(
     {
         schoolName: { type: String, required: true },
@@ -36,8 +28,8 @@ const Schools = new Schema(
         cert_sec: { type: String },
         cert_third: { type: String },
         cert_quart: { type: String },
-        amenities: [{ type: String, enum: amenitiesList }],
-        localities: [{ type: String }],
+        amenities: { type: String },
+        localities: { type: String },
         clicks: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
         schoolUser: { type: Schema.Types.ObjectId, ref: 'Users' }
     },

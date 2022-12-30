@@ -14,6 +14,7 @@ const Schools = new Schema(
         schoolName: { type: String, required: true },
         city: { type: String, required: true },
         country: { type: String, required: true },
+        secCountries: { type: String },
         website: { type: String },
         description: { type: String },
         priceFrom: { type: String },

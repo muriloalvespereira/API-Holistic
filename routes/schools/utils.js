@@ -19,6 +19,17 @@ export const hasSchool = (req, res, next) => {
     }
 }
 
+export const sanitizeCourse = (course) => {
+    const { title, description, price, duration, level, dates } = course
+    return {
+        title,
+        description,
+        price,
+        duration,
+        level,
+        dates
+    }
+}
 export const sanitizeSchool = (school) => {
     const {
         schoolName,
@@ -52,6 +63,6 @@ export const sanitizeSchool = (school) => {
         facebook,
         instagram,
         amenities,
-        localities,
+        localities
     }
 }

@@ -1,6 +1,7 @@
+import CourseSchema from '../../db/model/courses.js'
 import Schools from '../../db/model/schools.js'
 import User from '../../db/model/User.js'
-import { sanitizeSchool } from './utils.js'
+import { sanitizeCourse, sanitizeSchool } from './utils.js'
 
 const getSchools = async (req, res, next) => {
     try {
@@ -72,7 +73,79 @@ const create = async (req, res, next) => {
         next(err)
     }
 }
+const createCourse = async (req, res, next) => {
+    const school_ID = req.user.school_ID
+    try {
+        const newCourseBody = sanitizeCourse(req.body)
 
+        const newCourse = await CourseSchema.create({
+            school_ID,
+            ...newCourseBody
+        })
+
+        if (newCourse) {
+            return res.status(201).send({ newCourse, success: true })
+        } else {
+            return res
+                .status(400)
+                .send({ success: 'false', msg: 'Curso não criado!' })
+        }
+    } catch (err) {
+        next(err)
+    }
+}
+
+const editCourse = async (req, res, next) => {
+    const school_ID = req.user.school_ID
+    const { ...editedCourseBody } = sanitizeCourse(req.body)
+    try {
+        const updatedCourse = await CourseSchema.findByIdAndUpdate(
+            school_ID,
+            { school_ID, ...editedCourseBody },
+            { new: true }
+        )
+
+        if (updatedCourse) {
+            res.status(200).send({
+                success: true,
+                msg: 'Curso atualizado com sucesso!'
+            })
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Curso não atualizado!'
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        next(err)
+    }
+}
+const deleteCourse = async (req, res, next) => {
+    const course_id = req.params.courseID
+    const school_ID = req.user.school_ID
+    try {
+        const deletedCourse = await CourseSchema.findOneAndDelete({
+            _id: course_id,
+            school_ID
+        })
+
+        if (deletedCourse) {
+            res.status(200).send({
+                success: true,
+                msg: 'Curso deletado com sucesso!'
+            })
+        } else {
+            res.status(400).send({
+                success: false,
+                msg: 'Curso não deletado!'
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        next(err)
+    }
+}
 const updateSchool = async (req, res, next) => {
     const schoolBody = sanitizeSchool(req.body)
     try {
@@ -139,6 +212,14 @@ const addClick = async (req, res, next) => {
     }
 }
 
-const handlers = { getSchools, create, updateSchool, addClick }
+const handlers = {
+    getSchools,
+    create,
+    updateSchool,
+    addClick,
+    createCourse,
+    editCourse,
+    deleteCourse
+}
 
 export default handlers

@@ -8,7 +8,15 @@ import {
     schoolMulterList
 } from '../../config/cloudStorage.js'
 import multer from 'multer'
-const { getSchools, create, updateSchool, addClick } = handlers
+const {
+    getSchools,
+    create,
+    updateSchool,
+    addClick,
+    createCourse,
+    editCourse,
+    deleteCourse
+} = handlers
 
 const router = express.Router()
 
@@ -25,6 +33,11 @@ router
     )
 
 router.route('/update').put(validateAccess, getUser, isSchool, updateSchool)
+router
+    .route('/courses')
+    .post(validateAccess, getUser, isSchool, createCourse)
+    .put(validateAccess, getUser, isSchool, editCourse)
+    .delete(validateAccess, getUser, isSchool, deleteCourse)
 
 //test later
 router.route('/click/:schoolID').put(validateAccess, getUser, addClick)
